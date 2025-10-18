@@ -65,9 +65,9 @@ function getRandom() {
 }
 
 function showRandomQuote({ category, text, author }) {
-  categoryDisplay.textContent = `Category:  ${category}`;
-  textDisplay.textContent = `quote:  ${text}`;
-  authorDisplay.textContent = `author : ${author}`;
+  categoryDisplay.innerHTML = `Category:  ${category}`;
+  textDisplay.innerHTML = `quote:  ${text}`;
+  //.textContent = `author : ${author}`;
 }
 
 function createAddQuoteForm() {
