@@ -141,7 +141,7 @@ function addQuote() {
 populateCategories();
 
 const SERVER_BASE = "https://jsonplaceholder.typicode.com"; // mock API
-const SYNC_EVERY_MS = 15_000; // periodic pull
+const SYNC_EVERY_MS = 15_000;
 const LS_QUOTES_KEY = "QUOTES";
 const LS_CONFLICTS_KEY = "QUOTE_CONFLICTS";
 const LS_LAST_SYNC_KEY = "LAST_SYNC_AT";
@@ -188,7 +188,7 @@ function hideBanner() {
   banner.style.display = "none";
 }
 
-async function fetchServerQuotes() {
+async function fetchQuotesFromServer() {
   const res = await fetch(`${SERVER_BASE}/posts?_limit=25`);
   const data = await res.json();
   return data.map(postToQuote);
@@ -235,7 +235,7 @@ async function syncWithServer({ showUI = true } = {}) {
   try {
     if (showUI) showBanner("Syncing…");
 
-    const serverQuotes = await fetchServerQuotes();
+    const serverQuotes = await fetchQuotesFromServer();
 
     const { merged, conflicts } = mergeQuotes(serverQuotes, quotesArr);
 

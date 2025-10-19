@@ -12,6 +12,10 @@
       <p class="" id="textDisplay"></p>
       <p class="" id="authorDisplay"></p>
     </div>
+    <select id="categoryFilter" onchange="filterQuotes()">
+      <option value="all">All Categories</option>
+    </select>
+
     <button id="newQuote">Show New Quote</button>
     <div>
       <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
@@ -28,6 +32,23 @@
         accept=".json"
         onchange="importFromJsonFile(event)"
       />
+
+      <div
+        id="syncBanner"
+        style="
+          display: none;
+          padding: 0.5rem;
+          background: #fff3cd;
+          border: 1px solid #ffe69c;
+          margin: 0.5rem 0;
+          border-radius: 6px;
+        "
+      >
+        <span id="syncMessage"></span>
+        <button id="syncResolveBtn" style="margin-left: 8px">Resolve</button>
+      </div>
+
+      <button id="syncNow">Sync Now</button>
     </div>
     <script src="script.js"></script>
   </body>
