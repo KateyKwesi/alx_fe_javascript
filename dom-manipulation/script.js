@@ -139,6 +139,7 @@ async function syncQuotes() {
     localStorage.setItem("QUOTES", JSON.stringify(quotesArr));
     populateCategories();
     filterQuote();
+    console.log("Quotes synced with server!");
   } catch (e) {
     console.error("Sync failed:", e);
   }
