@@ -66,6 +66,19 @@ function addQuote() {
   createAddQuoteForm();
 }
 
+function importFromJsonFile(event) {
+  const fileReader = new FileReader();
+
+  fileReader.onload = function (event) {
+    const importedQuotes = JSON.parse(event.target.result);
+    quotesArr.push(...importedQuotes);
+    localStorage.setItem("QUOTES", JSON.stringify(quotesArr));
+    alert("Quotes imported successfully!");
+  };
+
+  fileReader.readAsText(event.target.files[0]);
+}
+
 displayQuoteBtn.addEventListener("click", async () => {
   const waitRandomQuote = await getRandom();
   showRandomQuote(waitRandomQuote);
