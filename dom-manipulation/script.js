@@ -140,7 +140,7 @@ function addQuote() {
 
 populateCategories();
 
-const SERVER_BASE = "https://jsonplaceholder.typicode.com"; // mock API
+const SERVER_BASE = "https://jsonplaceholder.typicode.com/posts";
 const SYNC_EVERY_MS = 15_000;
 const LS_QUOTES_KEY = "QUOTES";
 const LS_CONFLICTS_KEY = "QUOTE_CONFLICTS";
