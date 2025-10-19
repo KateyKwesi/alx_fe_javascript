@@ -97,3 +97,62 @@ downloadQuotes.addEventListener(`click`, () => {
 
   URL.revokeObjectURL(url);
 });
+
+function populateCategories() {
+  const categoryFilter = document.getElementById("categoryFilter");
+  categoryFilter.innerHTML = `<option value="all">All Categories</option>`;
+  const categories = [
+    ...new Set(quotesArr.map((q) => q.category).filter(Boolean)),
+  ];
+  categories.forEach((cat) => {
+    const opt = document.createElement("option");
+    opt.value = cat;
+    opt.textContent = cat;
+    categoryFilter.appendChild(opt);
+  });
+
+  const last = localStorage.getItem("SELECTED_CATEGORY");
+  if (last && categories.includes(last)) {
+    categoryFilter.value = last;
+    filterQuotes();
+  }
+}
+
+function filterQuotes() {
+  const categoryFilter = document.getElementById("categoryFilter");
+  const selected = categoryFilter.value;
+  localStorage.setItem("SELECTED_CATEGORY", selected);
+
+  displayQuote.innerHTML = "";
+  const filtered =
+    selected === "all"
+      ? quotesArr
+      : quotesArr.filter((q) => q.category === selected);
+
+  if (filtered.length === 0) {
+    displayQuote.textContent = "No quotes available for this category.";
+    return;
+  }
+
+  filtered.forEach((q) => {
+    const div = document.createElement("div");
+    div.className = "quote-item";
+    div.innerHTML = `<p><strong>${q.category}</strong>: ${q.quote}</p>`;
+    displayQuote.appendChild(div);
+  });
+}
+
+function createAddQuoteForm() {
+  const quote = quoteValue.value.trim();
+  const category = categoryValue.value.trim();
+  if (!quote || !category)
+    return alert("Please enter both quote and category.");
+
+  quotesArr.push({ category, quote });
+  localStorage.setItem("QUOTES", JSON.stringify(quotesArr));
+
+  populateCategories();
+  appendToDom(category, quote);
+}
+
+populateCategories();
