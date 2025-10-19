@@ -89,25 +89,31 @@ function populateCategories() {
     o.textContent = cat;
     f.appendChild(o);
   });
-  const l = localStorage.getItem("SELECTED_CATEGORY");
-  if (l && c.includes(l)) {
-    f.value = l;
+
+  const lastCategory = localStorage.getItem("selectedCategory");
+  if (lastCategory && c.includes(lastCategory)) {
+    f.value = lastCategory;
     filterQuote();
   }
 }
 
 function filterQuote() {
-  const f = document.getElementById("categoryFilter");
-  const s = f.value;
-  localStorage.setItem("SELECTED_CATEGORY", s);
+  const categoryFilter = document.getElementById("categoryFilter");
+  const selectedCategory = categoryFilter.value;
+  localStorage.setItem("selectedCategory", selectedCategory);
+
   displayQuote.innerHTML = "";
-  const fl =
-    s === "all" ? quotesArr : quotesArr.filter((q) => q.category === s);
-  if (fl.length === 0) {
+  const filtered =
+    selectedCategory === "all"
+      ? quotesArr
+      : quotesArr.filter((q) => q.category === selectedCategory);
+
+  if (filtered.length === 0) {
     displayQuote.textContent = "No quotes available for this category.";
     return;
   }
-  fl.forEach((q) => {
+
+  filtered.forEach((q) => {
     const d = document.createElement("div");
     d.className = "quote-item";
     d.innerHTML = `<p><strong>${q.category}</strong>: ${q.quote}</p>`;
@@ -157,4 +163,5 @@ displayQuoteBtn.addEventListener("click", async () => {
 function addQuote() {
   createAddQuoteForm();
 }
+
 populateCategories();
