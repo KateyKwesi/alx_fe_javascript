@@ -144,6 +144,10 @@ async function syncQuotes() {
   }
 }
 
+setInterval(() => {
+  syncQuotes();
+}, 30000);
+
 displayQuoteBtn.addEventListener("click", async () => {
   const r = await getRandom();
   showRandomQuote(r);
