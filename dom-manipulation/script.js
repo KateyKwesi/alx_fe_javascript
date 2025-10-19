@@ -5,8 +5,16 @@ const categoryValue = document.getElementById(`newQuoteCategory`);
 const categoryDisplay = document.getElementById("categoryDisplay");
 const textDisplay = document.getElementById("textDisplay");
 const authorDisplay = document.getElementById("authorDisplay");
+const downloadQuotes = document.getElementById(`downloadQuotes`);
 
-const quotesArr = [];
+//
+const savedQuotes = JSON.parse(localStorage.getItem(`QUOTES`)) || [];
+savedQuotes.forEach((savedquote) => {
+  const category = savedquote.category;
+  const quote = savedquote.quote;
+  appendToDom(category, quote);
+});
+const quotesArr = [...savedQuotes];
 
 const fetchQuote = async () => {
   const response = await fetch(
@@ -24,9 +32,8 @@ const fetchQuote = async () => {
 async function getRandom() {
   const quote = await fetchQuote();
   quotesArr.push(quote);
-
-  const randomIndex = Math.floor(Math.random() * quotesArr.length);
-  return quotesArr[randomIndex];
+  localStorage.setItem("QUOTES", JSON.stringify(quotesArr));
+  return quote;
 }
 
 function appendToDom(category, quote) {
@@ -49,8 +56,9 @@ function createAddQuoteForm() {
 
   quotesArr.push({
     category: `${category}`,
-    text: `${quote}`,
+    quote: `${quote}`,
   });
+  localStorage.setItem("QUOTES", JSON.stringify(quotesArr));
 
   appendToDom(category, quote);
 }
@@ -61,4 +69,18 @@ function addQuote() {
 displayQuoteBtn.addEventListener("click", async () => {
   const waitRandomQuote = await getRandom();
   showRandomQuote(waitRandomQuote);
+});
+
+downloadQuotes.addEventListener(`click`, () => {
+  const blob = new Blob([JSON.stringify(savedQuotes, null, 2)], {
+    type: `application/json`,
+  });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "quotes.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
 });
